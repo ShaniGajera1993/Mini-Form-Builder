@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  apache:
+    container_name: apache
+    build: ./docker/apache
+    links:
+      - php
+    ports:
+      - "80:80"
+    volumes:
+      - ./logs/apache:/var/log/apache2
+      - .:/usr/local/apache2/htdocs/miniformbuilder
+    networks:
+      - miniformbuilder
+  php:
+    container_name: php
+    build: ./docker/php
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/usr/local/apache2/htdocs/miniformbuilder
+    working_dir: /usr/local/apache2/htdocs/miniformbuilder
+    networks:
+      - miniformbuilder
+  postgres:
+    container_name: postgres
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./docker/db:/docker-entrypoint-initdb.d
+    networks:
+      - miniformbuilder
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "8085:80"
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    depends_on:
+      - postgres
+    networks:
+      - miniformbuilder
+networks:
+  miniformbuilder:
+    driver: bridge
+volumes:
+  pgadmin_data:
