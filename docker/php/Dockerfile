@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev libonig-dev libicu-dev \
     autoconf pkg-config libssl-dev \
     libxml2-dev libpng-dev \
-    libpq-dev  # Missing PostgreSQL dev library
+    libpq-dev \
+    nodejs npm
 
 RUN docker-php-ext-install dom gd
 RUN docker-php-ext-install bcmath mbstring intl opcache zip
