@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\FormBuilder;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -11,5 +12,7 @@ Route::view('dashboard', 'dashboard')
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
+
+Route::get('/form-builder', FormBuilder::class)->name('form-builder');
 
 require __DIR__.'/auth.php';
