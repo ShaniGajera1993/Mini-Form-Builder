@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4bee24c327bc4ffe0f467d93f2864be0",
+    "content-hash": "02c59e69bac130749af017c66fa57c3d",
     "packages": [
         {
             "name": "brick/math",
@@ -5945,49 +5945,44 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
-        }
-    ],
-    "packages-dev": [
+        },
         {
-            "name": "fakerphp/faker",
-            "version": "v1.24.1",
+            "name": "wireui/heroicons",
+            "version": "v2.8.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5"
+                "url": "https://github.com/wireui/heroicons.git",
+                "reference": "48aad6f427eeadf046d1ad3abf2b7c464b98bdf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
-                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
+                "url": "https://api.github.com/repos/wireui/heroicons/zipball/48aad6f427eeadf046d1ad3abf2b7c464b98bdf4",
+                "reference": "48aad6f427eeadf046d1ad3abf2b7c464b98bdf4",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4 || ^8.0",
-                "psr/container": "^1.0 || ^2.0",
-                "symfony/deprecation-contracts": "^2.2 || ^3.0"
-            },
-            "conflict": {
-                "fzaninotto/faker": "*"
+                "laravel/framework": "^9.16|^10.0|^11.0",
+                "php": "^8.1|^8.2|^8.3|^8.4"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.4.1",
-                "doctrine/persistence": "^1.3 || ^2.0",
-                "ext-intl": "*",
-                "phpunit/phpunit": "^9.5.26",
-                "symfony/phpunit-bridge": "^5.4.16"
-            },
-            "suggest": {
-                "doctrine/orm": "Required to use Faker\\ORM\\Doctrine",
-                "ext-curl": "Required by Faker\\Provider\\Image to download images.",
-                "ext-dom": "Required by Faker\\Provider\\HtmlLorem for generating random HTML.",
-                "ext-iconv": "Required by Faker\\Provider\\ru_RU\\Text::realText() for generating real Russian text.",
-                "ext-mbstring": "Required for multibyte Unicode string functionality."
+                "larastan/larastan": "^2.9",
+                "laravel/pint": "^1.6",
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7|^8.0|^9.0",
+                "pestphp/pest": "^3.0"
             },
             "type": "library",
+            "extra": {
+                "aliases": [],
+                "laravel": {
+                    "providers": [
+                        "WireUi\\Heroicons\\HeroiconsServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Faker\\": "src/Faker/"
+                    "WireUi\\Heroicons\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5996,21 +5991,96 @@
             ],
             "authors": [
                 {
-                    "name": "François Zaninotto"
+                    "name": "Pedro Oliveira",
+                    "email": "pedrolivertwd@gmail.com"
                 }
             ],
-            "description": "Faker is a PHP library that generates fake data for you.",
+            "description": "The Tailwind Heroicons for laravel blade by WireUI",
             "keywords": [
-                "data",
-                "faker",
-                "fixtures"
+                "blade components",
+                "blade heroicons",
+                "laravel components",
+                "livewire icons",
+                "livewire icons components",
+                "wireui"
             ],
             "support": {
-                "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.24.1"
+                "issues": "https://github.com/wireui/heroicons/issues",
+                "source": "https://github.com/wireui/heroicons/tree/v2.8.0"
             },
-            "time": "2024-11-21T13:46:39+00:00"
+            "time": "2025-01-04T22:01:11+00:00"
         },
+        {
+            "name": "wireui/wireui",
+            "version": "v2.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wireui/wireui.git",
+                "reference": "ae6a1cec8a0eb8027dec3c6868d1f5d7ef3495ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wireui/wireui/zipball/ae6a1cec8a0eb8027dec3c6868d1f5d7ef3495ad",
+                "reference": "ae6a1cec8a0eb8027dec3c6868d1f5d7ef3495ad",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0|^11.0",
+                "php": "^8.2|^8.3|^8.4",
+                "wireui/heroicons": "^2.6"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.16",
+                "livewire/livewire": "^3.5",
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench": "^8.14|^9.0",
+                "orchestra/testbench-dusk": "^8.14|^9.0",
+                "pestphp/pest": "^2.34",
+                "pestphp/pest-plugin-laravel": "^2.4",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpunit/phpunit": "^10.5",
+                "psy/psysh": "^0.12.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": [],
+                    "providers": [
+                        "WireUi\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "WireUi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pedro Oliveira",
+                    "email": "pedro@wireui.dev"
+                }
+            ],
+            "description": "TallStack components",
+            "keywords": [
+                "blade components",
+                "laravel components",
+                "livewire components",
+                "livewire-ui",
+                "wireui"
+            ],
+            "support": {
+                "issues": "https://github.com/wireui/wireui/issues",
+                "source": "https://github.com/wireui/wireui/tree/v2.2.2"
+            },
+            "time": "2025-01-05T02:50:06+00:00"
+        }
+    ],
+    "packages-dev": [
         {
             "name": "filp/whoops",
             "version": "2.17.0",
@@ -6761,6 +6831,64 @@
             "time": "2022-02-21T01:04:05+00:00"
         },
         {
+            "name": "phpstan/phpstan",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7d08f569e582ade182a375c366cbd896eccadd3a",
+                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-21T14:54:06+00:00"
+        },
+        {
             "name": "phpunit/php-code-coverage",
             "version": "11.0.8",
             "source": {
@@ -7183,6 +7311,65 @@
                 }
             ],
             "time": "2025-01-31T07:03:30+00:00"
+        },
+        {
+            "name": "rector/rector",
+            "version": "2.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "3c70238bc677eb98866000a05b19a34f12955954"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/3c70238bc677eb98866000a05b19a34f12955954",
+                "reference": "3c70238bc677eb98866000a05b19a34f12955954",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "phpstan/phpstan": "^2.1.2"
+            },
+            "conflict": {
+                "rector/rector-doctrine": "*",
+                "rector/rector-downgrade-php": "*",
+                "rector/rector-phpunit": "*",
+                "rector/rector-symfony": "*"
+            },
+            "suggest": {
+                "ext-dom": "To manipulate phpunit.xml via the custom-rule command"
+            },
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "keywords": [
+                "automation",
+                "dev",
+                "migration",
+                "refactoring"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/2.0.8"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-02-06T14:02:49+00:00"
         },
         {
             "name": "sebastian/cli-parser",
