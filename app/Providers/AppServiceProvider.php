@@ -23,7 +23,5 @@ class AppServiceProvider extends ServiceProvider
     {
         $locale = Session::get('locale', 'en');
         App::setLocale($locale);
-
-        \Log::info('Current Session Data:', session()->all());
     }
 }

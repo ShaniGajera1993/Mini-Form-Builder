@@ -69,10 +69,15 @@
             valid = false;
             this.addNotification('Select fields must have at least two options.');
         }
+        if (this.formConfig.fields.some(field => field.options.some(option => option.trim() === ''))) {
+            valid = false;
+            this.addNotification('Options cannot be empty.');
+        }
         if (this.formConfig.fields.some(field => field.type === 'radio' && field.options.length < 2)) {
             valid = false;
             this.addNotification('Radio buttons must have at least two options.');
         }
+
         return valid;
     },
 
@@ -316,6 +321,12 @@
                                 <template x-if="field.type === 'text'">
                                     <input type="text" :placeholder="field.placeholder"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                </template>
+                                <template x-if="field.type === 'button'">
+                                    <button
+                                        class="w-full px-3 py-2 bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <span x-text="field.label"></span>
+                                    </button>
                                 </template>
                                 <template x-if="field.type === 'select'">
                                     <select
