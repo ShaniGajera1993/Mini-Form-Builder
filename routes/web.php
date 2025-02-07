@@ -13,8 +13,6 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('/form-builder', FormBuilder::class)
-    ->middleware(['auth'])
-    ->name('form-builder');
+Route::get('/form-builder', FormBuilder::class)->name('form-builder');
 
 require __DIR__.'/auth.php';
