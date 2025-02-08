@@ -1,93 +1,111 @@
-<div x-data="{
-    formConfig: @entangle('formConfig'),
-    showFieldMenu: false,
-    searchTerm: '',
-    showPreview: false,
-    filteredFieldTypes: ['text', 'button', 'select', 'radio', 'checkbox'],
-    notifications: [],
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('formBuilder', () => ({
+            formConfig: @entangle('formConfig'),
+            showFieldMenu: false,
+            searchTerm: '',
+            showPreview: false,
+            filteredFieldTypes: ['text', 'button', 'select', 'radio', 'checkbox'],
+            notifications: [],
 
-    addNotification(message, type = 'error') {
-        const id = Date.now();
-        this.notifications.push({ id, message, type });
-        setTimeout(() => {
-            this.notifications = this.notifications.filter(n => n.id !== id);
-        }, 3000);
-    },
+            addNotification(message, type = 'error') {
+                const id = Date.now();
+                this.notifications.push({
+                    id,
+                    message,
+                    type
+                });
+                setTimeout(() => {
+                    this.notifications = this.notifications.filter(n => n.id !== id);
+                }, 3000);
+            },
 
-    addField(type) {
-        if (this.isValidField('New Field', 'Enter value') && this.isValidTitle(this.formConfig.title)) {
-            this.formConfig.fields.push({
-                id: crypto.randomUUID(),
-                type: type,
-                label: 'New Field',
-                placeholder: 'Enter value',
-                required: false,
-                options: []
-            });
-            this.showFieldMenu = false;
-        }
-    },
+            addField(type) {
+                if (this.isValidField('{{ __('form.field_label') }}',
+                        '{{ __('form.field_placeholder') }}') && this.isValidTitle(this.formConfig
+                        .title)) {
+                    this.formConfig.fields.push({
+                        id: crypto.randomUUID(),
+                        type: type,
+                        label: '{{ __('form.field_label') }}',
+                        placeholder: '{{ __('form.field_placeholder') }}',
+                        required: false,
+                        options: []
+                    });
+                    this.showFieldMenu = false;
+                }
+            },
 
-    removeField(id) {
-        this.formConfig.fields = this.formConfig.fields.filter(field => field.id !== id);
-    },
+            removeField(id) {
+                this.formConfig.fields = this.formConfig.fields.filter(field => field.id !== id);
+            },
 
-    updateField(id, updates) {
-        const fieldIndex = this.formConfig.fields.findIndex(field => field.id === id);
-        if (fieldIndex !== -1) {
-            this.formConfig.fields[fieldIndex] = { ...this.formConfig.fields[fieldIndex], ...updates };
-        }
-    },
+            updateField(id, updates) {
+                const fieldIndex = this.formConfig.fields.findIndex(field => field.id === id);
+                if (fieldIndex !== -1) {
+                    this.formConfig.fields[fieldIndex] = {
+                        ...this.formConfig.fields[fieldIndex],
+                        ...updates
+                    };
+                }
+            },
 
-    isValidField(label, placeholder) {
-        const regex = /^[a-zA-Z ]+$/;
-        return label && placeholder && regex.test(label) && regex.test(placeholder);
-    },
+            isValidField(label, placeholder) {
+                const regex = /^[a-zA-Z ]+$/;
+                return label && placeholder && regex.test(label) && regex.test(placeholder);
+            },
 
-    isValidTitle(title) {
-        const regex = /^[a-zA-Z ]+$/;
-        return title && regex.test(title);
-    },
+            isValidTitle(title) {
+                const regex = /^[a-zA-Z ]+$/;
+                return title && regex.test(title);
+            },
 
-    validateForm() {
-        let valid = true;
-        if (!this.isValidTitle(this.formConfig.title)) {
-            valid = false;
-            this.addNotification('Please ensure the form has a valid title.');
-        }
-        this.formConfig.fields.forEach(field => {
-            if (!field.label || !field.placeholder || !this.isValidField(field.label, field.placeholder)) {
-                valid = false;
-                this.addNotification('Please ensure all fields have a valid label and placeholder.');
+            validateForm() {
+                let valid = true;
+                if (!this.isValidTitle(this.formConfig.title)) {
+                    valid = false;
+                    this.addNotification('{{ __('form.form_title_validation') }}');
+                }
+                this.formConfig.fields.forEach(field => {
+                    if (!field.label || !field.placeholder || !this.isValidField(field
+                            .label, field.placeholder)) {
+                        valid = false;
+                        this.addNotification('{{ __('form.form_validation') }}');
+                    }
+                });
+                if (this.formConfig.fields.length === 0) {
+                    valid = false;
+                    this.addNotification('{{ __('form.form_add_field_validation') }}');
+                }
+                if (this.formConfig.fields.some(field => field.type === 'select' && field.options
+                        .length < 2)) {
+                    valid = false;
+                    this.addNotification('{{ __('form.select_field_validation') }}');
+                }
+                if (this.formConfig.fields.some(field => field.options.some(option => option
+                    .trim() === ''))) {
+                    valid = false;
+                    this.addNotification('{{ __('form.form_validation') }}');
+                }
+                if (this.formConfig.fields.some(field => field.type === 'radio' && field.options
+                        .length < 2)) {
+                    valid = false;
+                    this.addNotification('{{ __('form.radio_field_validation') }}');
+                }
+
+                return valid;
+            },
+
+            publishForm() {
+                if (this.validateForm()) {
+                    this.addNotification('{{ __('form.form_published') }}', 'success');
+                    @this.call('publishForm');
+                }
             }
-        });
-        if (this.formConfig.fields.length === 0) {
-            valid = false;
-            this.addNotification('Please add at least one field to the form.');
-        }
-        if (this.formConfig.fields.some(field => field.type === 'select' && field.options.length < 2)) {
-            valid = false;
-            this.addNotification('Select fields must have at least two options.');
-        }
-        if (this.formConfig.fields.some(field => field.options.some(option => option.trim() === ''))) {
-            valid = false;
-            this.addNotification('Options cannot be empty.');
-        }
-        if (this.formConfig.fields.some(field => field.type === 'radio' && field.options.length < 2)) {
-            valid = false;
-            this.addNotification('Radio buttons must have at least two options.');
-        }
-
-        return valid;
-    },
-
-    publishForm() {
-        if (this.validateForm()) {
-            this.addNotification('Form Published Successfully!', 'success');
-            @this.call('publishForm');
-        }
-    }
-}" class="flex min-h-screen bg-gray-50">
+        }));
+    });
+</script>
+<div x-data="formBuilder" class="flex min-h-screen bg-gray-50">
     <div class="fixed left-1/2 transform -translate-x-1/2 space-y-2 z-50">
         <template x-for="notification in notifications" :key="notification.id">
             <div class="px-4 py-2 rounded-md shadow-md text-white text-sm"
@@ -100,9 +118,9 @@
             <div class="flex justify-between items-center mb-6 flex-wrap">
                 <!-- Breadcrumb Section -->
                 <div class="flex items-center gap-2 text-sm text-gray-500">
-                    <a href="#" class="text-blue-600 hover:underline">My Forms</a>
+                    <a href="#" class="text-blue-600 hover:underline">{{ __('form.my_forms') }}</a>
                     <span>/</span>
-                    <span>Create New Form</span>
+                    <span>{{ __('form.create_new_form') }}</span>
                 </div>
 
                 <!-- Button Section -->
@@ -110,12 +128,12 @@
                     <!-- Preview Button -->
                     <button x-on:click="showPreview = true"
                         class="px-2 py-1 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 items-center gap-2 w-full sm:w-auto">
-                        Preview
+                        {{ __('form.preview') }}
                     </button>
                     <!-- Publish Button -->
                     <button x-on:click="publishForm"
                         class="px-2 py-1 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 w-full sm:w-auto">
-                        Publish Form
+                        {{ __('form.publish') }}
                     </button>
                 </div>
             </div>
@@ -126,7 +144,7 @@
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                         <input x-model="formConfig.title"
                             class="text-2xl font-medium text-gray-800 w-full border-none focus:outline-none focus:ring-0 mb-6"
-                            placeholder="Untitled Form" />
+                            placeholder="tiltle" />
 
                         <div class="space-y-4">
                             <template x-for="field in formConfig.fields" :key="field.id">
@@ -136,10 +154,10 @@
                                         <div class="flex-1">
                                             <input x-model="field.label"
                                                 class="text-base font-medium text-gray-800 w-full border-none focus:outline-none focus:ring-0"
-                                                placeholder="Field Label" />
+                                                placeholder="{{ __('form.field_label') }}" />
                                             <input x-model="field.placeholder"
                                                 class="mt-2 text-sm text-gray-500 w-full border-none focus:outline-none focus:ring-0"
-                                                placeholder="Enter placeholder text" />
+                                                placeholder="{{ __('form.field_placeholder') }}" />
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <button x-on:click="removeField(field.id)"
@@ -155,13 +173,13 @@
 
                                     <div x-show="field.type === 'select'" class="mt-4 p-4">
                                         <label
-                                            class="text-base font-medium text-gray-800 w-full border-none focus:outline-none focus:ring-0">Options</label>
+                                            class="text-base font-medium text-gray-800 w-full border-none focus:outline-none focus:ring-0">{{ __('form.field_options') }}</label>
                                         <div>
                                             <template x-for="(option, index) in field.options" :key="index">
                                                 <div class="flex items-center space-x-2 mt-2">
                                                     <input type="text" x-model="field.options[index]"
                                                         class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
-                                                        placeholder="Option" />
+                                                        placeholder="{{ __('form.add_option') }}" />
                                                     <button x-on:click="field.options.splice(index, 1)"
                                                         class="p-1 text-gray-400 hover:text-red-500">
                                                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
@@ -175,17 +193,18 @@
                                         </div>
                                         <button x-on:click="field.options.push('')"
                                             class="text-blue-600 text-sm mt-2 hover:bg-blue-50 px-4 py-2 rounded-md">
-                                            Add Option
+                                            {{ __('form.add_option') }}
                                         </button>
                                     </div>
                                     <div x-show="field.type === 'radio'" class="mt-4 p-4">
-                                        <label class="block text-sm text-gray-600 mb-2">Options</label>
+                                        <label
+                                            class="block text-sm text-gray-600 mb-2">{{ __('form.field_options') }}</label>
                                         <div>
                                             <template x-for="(option, index) in field.options" :key="index">
                                                 <div class="flex items-center space-x-2 mt-2">
                                                     <input type="text" x-model="field.options[index]"
                                                         class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm"
-                                                        placeholder="Option" />
+                                                        placeholder="{{ __('form.add_option') }}" />
                                                     <button x-on:click="field.options.splice(index, 1)"
                                                         class="p-1 text-gray-400 hover:text-red-500">
                                                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +218,7 @@
                                         </div>
                                         <button x-on:click="field.options.push('')"
                                             class="text-blue-600 text-sm mt-2 hover:bg-blue-50 px-4 py-2 rounded-md">
-                                            Add Option
+                                            {{ __('form.add_option') }}
                                         </button>
                                     </div>
                                 </div>
@@ -214,7 +233,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5h6M9 12h6M9 19h6" />
                                 </svg>
-                                Add New Field
+                                {{ __('form.add_new_field') }}
                             </button>
 
                             <div x-show="showFieldMenu"
@@ -229,7 +248,7 @@
                                         </svg>
                                         <input type="text" x-model="searchTerm"
                                             class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                            placeholder="Search field type..." />
+                                            placeholder="{{ __('form.search_field') }}" />
                                     </div>
                                 </div>
                                 <div class="max-h-64 overflow-y-auto">
@@ -249,10 +268,11 @@
 
                 <div class="space-y-4 col-span-1">
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                        <h3 class="text-sm font-medium text-gray-800 mb-4">Form Style</h3>
+                        <h3 class="text-sm font-medium text-gray-800 mb-4">{{ __('form.font_style') }}</h3>
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-sm text-gray-600 mb-2">Background Color</label>
+                                <label
+                                    class="block text-sm text-gray-600 mb-2">{{ __('form.background_color') }}</label>
                                 <div class="flex gap-2">
                                     <template
                                         x-for="color in ['#ffffff', '#f3f4f6', '#fef2f2', '#ecfdf5', '#eff6ff', '#faf5ff']"
@@ -270,7 +290,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm text-gray-600 mb-2">Font Family</label>
+                                <label class="block text-sm text-gray-600 mb-2">{{ __('form.font_family') }}</label>
                                 <select x-model="formConfig.style.fontFamily"
                                     class="w-full rounded-md border-gray-300 text-sm">
                                     <option value="Roboto">Roboto</option>
@@ -283,7 +303,7 @@
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" x-model="formConfig.style.showLabels"
                                         class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                                    <span class="text-sm text-gray-600">Show Labels</span>
+                                    <span class="text-sm text-gray-600">{{ __('form.show_labels') }}</span>
                                 </label>
                             </div>
                         </div>
@@ -295,9 +315,9 @@
 
     <!-- Form Preview Modal -->
     <div x-show="showPreview" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" :style="{ backgroundColor: formConfig.style.backgroundColor, fontFamily: formConfig.style.fontFamily }">
             <div class="p-6 border-b border-gray-200 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-800">Form Preview</h2>
+                <h2 class="text-xl font-semibold text-gray-800">{{ __('form.preview') }}</h2>
                 <button x-on:click="showPreview = false" class="text-gray-500 hover:text-gray-700">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -309,7 +329,8 @@
 
             <div class="p-6">
                 <div class="space-y-4">
-                    <h3 class="text-lg font-medium text-gray-800">Form Title: <span x-text="formConfig.title"></span>
+                    <h3 class="text-lg font-medium text-gray-800"><span
+                            x-text="formConfig.title"></span>
                     </h3>
                     <div class="space-y-4">
                         <template x-for="field in formConfig.fields" :key="field.id">
@@ -331,7 +352,8 @@
                                 <template x-if="field.type === 'select'">
                                     <select
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                        <option value="" class="text-sm text-gray-500">Select an option</option>
+                                        <option value="" class="text-sm text-gray-500">{{ __('form.select') }}
+                                        </option>
                                         <template x-for="option in field.options" :key="option">
                                             <option :value="option" x-text="option"
                                                 class="text-sm text-gray-800">

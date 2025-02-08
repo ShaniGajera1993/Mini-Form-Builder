@@ -19,4 +19,14 @@ return [
     'background_color' => 'Background Color',
     'font_family' => 'Font Family',
     'search_field' => 'Search Field Type...',
+    'text' => 'Text',
+    'button' => 'Button',
+    'checkbox' => 'Checkbox',
+    'select' => 'Select',
+    'radio' => 'Radio',
+    'my_forms' => 'My Forms',
+    'create_new_form' => 'Create New Form',
+    'form_builder' => 'Form Builder',
+    'logout' => 'Logout',
+    'font_style' => 'Font Style'
 ];
