@@ -48,8 +48,11 @@ A simple form builder application built with the TALL stack (Tailwind CSS, Alpin
    ```
 
 ## Screenshots
-![first](https://github.com/user-attachments/assets/cc9a80e5-4bca-40d5-a715-a88432e68692)
 
-![second](https://github.com/user-attachments/assets/cc6a4b3d-9135-4a59-9d46-f2b9431fdeda)
+![first](https://github.com/user-attachments/assets/076b2e73-852d-448d-9d3b-5ec6b1cf4996)
 
-![third](https://github.com/user-attachments/assets/0148eeda-4d87-40c2-84a4-cb5c38998393)
+![second](https://github.com/user-attachments/assets/425a1db9-1d8d-40b5-9f71-17617817322f)
+
+![third](https://github.com/user-attachments/assets/55a1894d-5c97-4fad-a49d-cd91f736aaf7)
+
+![fourth](https://github.com/user-attachments/assets/5586b50e-92dc-4db1-aec2-75a2cb1ca831)
