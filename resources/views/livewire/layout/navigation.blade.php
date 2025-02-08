@@ -11,7 +11,7 @@ new class extends Component {
     {
         $logout();
 
-        $this->redirect('/', navigate: true);
+        $this->redirect('/login', navigate: true);
     }
 }; ?>
 
@@ -22,7 +22,7 @@ new class extends Component {
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
+                    <a href="{{ route('form-builder') }}" wire:navigate>
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -30,7 +30,7 @@ new class extends Component {
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('form-builder')" :active="request()->routeIs('form-builder')" wire:navigate>
-                        {{ __('Form Builder') }}
+                        {{ __('form.form_builder') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -44,7 +44,7 @@ new class extends Component {
                     <!-- Log Out Button -->
                     <button wire:click="logout"
                         class="ml-4 px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700">
-                        {{ __('Log Out') }}
+                        {{ __('form.logout') }}
                     </button>
 
                     <!-- Locale Switcher -->

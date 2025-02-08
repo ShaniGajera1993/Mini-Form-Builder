@@ -3,6 +3,14 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    <IfModule mod_deflate.c>
+        AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+    </IfModule>
+
+    <IfModule mod_headers.c>
+        Header set Cache-Control "max-age=31536000, public"
+    </IfModule>
+
     RewriteEngine On
 
     # Handle Authorization Header

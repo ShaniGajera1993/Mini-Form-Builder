@@ -10,7 +10,7 @@ class FormBuilder extends Component
 {
     public $formConfig = [
         'id' => null,
-        'title' => 'Untitled Form',
+        'title' => '',
         'fields' => [],
         'style' => [
             'backgroundColor' => '#ffffff',
@@ -18,6 +18,11 @@ class FormBuilder extends Component
             'showLabels' => true,
         ],
     ];
+
+    public function mount()
+    {
+        $this->formConfig['title'] = __('form.form_title');
+    }
 
     public function render()
     {

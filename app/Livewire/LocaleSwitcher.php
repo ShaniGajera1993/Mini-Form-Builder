@@ -3,29 +3,21 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Middleware;
 
-#[Middleware('web')]
 class LocaleSwitcher extends Component
 {
-    public $locale;
-
-    public function mount()
+    #[Middleware('auth')]
+    public function switchLanguage($locale)
     {
-        $this->locale = Session::get('user_locale', App::getLocale());
-        App::setLocale($this->locale);
-    }
-
-    public function setLocale($locale)
-    {
-        if (in_array($locale, ['en', 'de'])) {
-            App::setLocale($locale);
-            Session::put('locale', $locale);
-            $this->locale = $locale;
-            $this->redirect(request()->header('Referer') ?? route('form-builder'), navigate: true);
+        if (!in_array($locale, ['en', 'de'])) {
+            abort(400);
         }
+
+        Session::put('locale', $locale);
+
+        return redirect()->route('form-builder');
     }
 
     public function render()
